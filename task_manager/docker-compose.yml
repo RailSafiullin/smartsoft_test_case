@@ -5,27 +5,28 @@ services:
     image: postgres:13
     container_name: postgres
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: task_manager_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
 
-  app:
-    build: ..
-    container_name: fastapi
+  backend:
+    build: ./backend
     ports:
       - "8000:8000"
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - SECRET_KEY=${SECRET_KEY}
     depends_on:
       - db
-    environment:
-      DATABASE_URL: postgresql://user:password@db:5432/task_manager_db
-    volumes:
-      - .:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 
 volumes:
