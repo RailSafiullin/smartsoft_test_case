@@ -1,0 +1,39 @@
+# Ignore version control directories
+.git
+.gitignore
+
+# Ignore Python virtual environment (venv)
+venv/
+
+# Exclude backend-specific files or directories
+backend/.vscode/
+backend/venv/
+backend/app/__pycache__/
+backend/app/.env
+backend/app/.pytest_cache/
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+*.pyc
+
+# Ignore development and build files
+*.log
+*.lock
+*.yml
+*.env
+*.md
+
+# Ignore editor and IDE-specific files
+.idea
+*.sublime-*
+*.swp
+
+# Ignore testing and documentation files
+tests
+docs
+
+# Ignore OS-specific files
+.DS_Store
+*/**.DS_Store
+Thumbs.db
