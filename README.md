@@ -22,7 +22,13 @@ RESTful API для управления задачами пользовател�
 1. Склонируйте репозиторий:
    ```cmd
    git clone https://github.com/RailSafiullin/smartsoft_test_case
+
+2. Перейдите в папку проекта:
+   ```cmd
    cd task_manager
+
+3. Запустите докер контейнер
+   ```cmd
    docker-compose up --build
 
-2. API - Swagger UI: http://localhost:8000/docs
+4. Перейдите к документации API - Swagger UI: http://localhost:8000/docs
