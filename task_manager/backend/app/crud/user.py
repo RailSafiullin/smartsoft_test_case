@@ -8,6 +8,10 @@ class UserCRUD:
         result = await db.execute(select(User).filter(User.id == user_id))
         return result.scalar_one_or_none()
 
+    async def get_user_by_username(self, db: AsyncSession, username: str):
+        result = await db.execute(select(User).filter(User.username == username))
+        return result.scalar_one_or_none()
+
     async def get_user_by_email(self, db: AsyncSession, email: str):
         result = await db.execute(select(User).filter(User.email == email))
         return result.scalar_one_or_none()

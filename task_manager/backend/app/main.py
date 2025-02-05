@@ -1,11 +1,23 @@
 import uvicorn
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from routers import auth, users, tasks
-from database import engine, Base
+from database.session import engine, Base
 
-Base.metadata.create_all(bind=engine)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    print("Tables created successfully")
 
-app = FastAPI()
+    yield
+    
+    # Shutdown
+    await engine.dispose()
+    print("Database connection closed")
+
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(auth.router)
 app.include_router(users.router)

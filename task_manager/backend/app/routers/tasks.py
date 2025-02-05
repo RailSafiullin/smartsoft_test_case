@@ -1,23 +1,23 @@
+import schemas
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.session import get_db
 from crud.task import task_crud
-from schemas.task import Task, TaskCreate, TaskUpdate
 from models.user import User
 from dependencies import get_current_user
 
-router = APIRouter(tags=["tasks"])
+router = APIRouter(prefix="/tasks", tags=["tasks"])
 
-@router.post("/tasks/", response_model=Task, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=schemas.Task, status_code=status.HTTP_201_CREATED)
 async def create_task(
-    task: TaskCreate,
+    task: schemas.TaskCreate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     return await task_crud.create_task(db, task.model_dump(), current_user.id)
 
-@router.get("/tasks/", response_model=list[Task])
+@router.get("/", response_model=list[schemas.Task])
 async def read_tasks(
     title: str = Query(None),
     created_after: datetime = Query(None),
@@ -26,7 +26,7 @@ async def read_tasks(
 ):
     return await task_crud.get_user_tasks(db, current_user.id, title, created_after)
 
-@router.get("/tasks/{task_id}", response_model=Task)
+@router.get("/{task_id}", response_model=schemas.Task)
 async def read_task(
     task_id: int,
     db: AsyncSession = Depends(get_db),
@@ -37,10 +37,10 @@ async def read_task(
         raise HTTPException(status_code=404, detail="Task not found")
     return task
 
-@router.put("/tasks/{task_id}", response_model=Task)
+@router.put("/{task_id}", response_model=schemas.Task)
 async def update_task(
     task_id: int,
-    task_update: TaskUpdate,
+    task_update: schemas.TaskUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -53,7 +53,7 @@ async def update_task(
         raise HTTPException(status_code=404, detail="Task not found")
     return updated_task
 
-@router.delete("/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
     task_id: int,
     db: AsyncSession = Depends(get_db),

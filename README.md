@@ -15,7 +15,14 @@ RESTful API для управления задачами пользовател�
 ## Требования
 
 - Python 3.9+
-- PostgreSQL 12+
-- Docker (опционально)
+- Docker
 
+## Быстрый старт
 
+1. Склонируйте репозиторий:
+   ```cmd
+   git clone https://github.com/RailSafiullin/smartsoft_test_case
+   cd task_manager
+   docker-compose up --build
+
+2. API - Swagger UI: http://localhost:8000/docs
